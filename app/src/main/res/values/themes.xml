@@ -1,0 +1,7 @@
+<resources>
+    <style name="Theme.AdminPanel" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">#2d5016</item>
+        <item name="android:navigationBarColor">#f0ece2</item>
+        <item name="android:windowBackground">@android:color/white</item>
+    </style>
+</resources>

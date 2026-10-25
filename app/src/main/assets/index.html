@@ -1,0 +1,1232 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>অ্যাডমিন প্যানেল | সজিব কম্পিউটার</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* ═══════ DESIGN TOKENS ═══════ */
+:root {
+  /* Earth & land palette */
+  --soil:    #2d5016;   /* deep forest green — primary action */
+  --soil-dk: #1c3a0d;   /* darker hover */
+  --leaf:    #4a7c28;   /* mid green */
+  --straw:   #c8a84b;   /* golden wheat / land marker */
+  --mud:     #8b5e2a;   /* warm brown accent */
+  --clay:    #f0ece2;   /* parchment background */
+  --parch:   #faf8f3;   /* lighter parchment */
+  --river:   #1e5fa8;   /* blue for paid/complete */
+
+  --ink:     #1a1c10;   /* near-black */
+  --muted:   #6b6e60;   /* muted text */
+  --border:  #d8d3c6;   /* subtle border */
+  --white:   #ffffff;
+
+  --red:     #c0392b;
+  --amber:   #b45309;
+
+  /* Spacing & radius */
+  --r-sm:    8px;
+  --r-md:    12px;
+  --r-lg:    18px;
+
+  /* Shadows */
+  --sh-sm: 0 2px 8px rgba(45,80,22,.08);
+  --sh-md: 0 6px 24px rgba(45,80,22,.10);
+}
+
+/* ═══════ RESET ═══════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--clay);
+  color: var(--ink);
+  font: 15px/1.6 'Hind Siliguri', sans-serif;
+  min-height: 100vh;
+}
+
+/* ═══════ HEADER ═══════ */
+.header {
+  background: var(--soil);
+  color: var(--white);
+  padding: 0 max(5%, calc((100% - 1160px) / 2));
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 3px 16px rgba(0,0,0,.25);
+  display: flex; align-items: stretch; justify-content: space-between; gap: 12px;
+}
+
+.brand-wrap {
+  display: flex; align-items: center; gap: 14px; padding: 14px 0;
+}
+.brand-icon {
+  width: 46px; height: 46px;
+  background: var(--straw);
+  border-radius: var(--r-md);
+  display: grid; place-items: center;
+  flex-shrink: 0;
+  position: relative; overflow: hidden;
+}
+.brand-icon svg { width: 28px; height: 28px; }
+
+.brand-text h1 {
+  font-size: 18px; font-weight: 700; color: var(--white);
+  line-height: 1.2;
+}
+.brand-text p {
+  font-size: 12px; color: rgba(255,255,255,.65); line-height: 1;
+  margin-top: 2px;
+}
+
+.header-right {
+  display: flex; align-items: center; gap: 8px;
+}
+
+.badge-status {
+  font-size: 12px; font-weight: 700;
+  padding: 5px 12px; border-radius: 20px;
+  background: rgba(255,255,255,.12);
+  color: rgba(255,255,255,.9);
+  border: 1px solid rgba(255,255,255,.2);
+  white-space: nowrap;
+}
+
+/* ═══════ BUTTONS ═══════ */
+.btn {
+  border: none; cursor: pointer;
+  font: 600 13px 'Hind Siliguri', sans-serif;
+  border-radius: var(--r-sm); padding: 8px 16px;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: background .14s, transform .1s;
+  text-decoration: none;
+}
+.btn:active { transform: scale(.97); }
+.btn-primary  { background: var(--soil);  color: #fff; }
+.btn-primary:hover { background: var(--soil-dk); }
+.btn-red      { background: var(--red);   color: #fff; }
+.btn-red:hover{ background: #a12920; }
+.btn-amber    { background: var(--amber); color: #fff; }
+.btn-amber:hover { background: #92420a; }
+.btn-ghost    {
+  background: rgba(255,255,255,.1);
+  color: rgba(255,255,255,.9);
+  border: 1px solid rgba(255,255,255,.25);
+}
+.btn-ghost:hover { background: rgba(255,255,255,.2); }
+.btn-outline  {
+  background: transparent;
+  color: var(--soil); border: 1.5px solid var(--border);
+}
+.btn-outline:hover { background: #e8f0df; border-color: var(--leaf); }
+.btn-wa { background: #25d366; color: #fff; }
+.btn-wa:hover { background: #1aad52; }
+.btn-full { width: 100%; justify-content: center; }
+.btn-lg { padding: 12px 24px; font-size: 15px; }
+
+/* ═══════ WRAP ═══════ */
+.wrap {
+  max-width: 1160px;
+  margin: 28px auto;
+  padding: 0 18px;
+}
+
+/* ═══════ LOGIN ═══════ */
+.login-outer {
+  min-height: calc(100vh - 75px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px 18px;
+}
+.login-card {
+  width: 100%; max-width: 420px;
+  background: var(--white);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-md);
+  overflow: hidden;
+}
+.login-top {
+  background: var(--soil);
+  padding: 28px 28px 24px;
+  position: relative;
+}
+.login-top::after {
+  content: '';
+  position: absolute; bottom: -1px; left: 0; right: 0;
+  height: 24px;
+  background: var(--white);
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+.login-icon-wrap {
+  width: 60px; height: 60px;
+  background: var(--straw);
+  border-radius: var(--r-md);
+  display: grid; place-items: center;
+  margin-bottom: 16px;
+}
+.login-icon-wrap svg { width: 34px; height: 34px; }
+.login-top h2 {
+  font-family: 'Tiro Bangla', serif;
+  font-size: 26px; font-weight: 400;
+  color: #fff; line-height: 1.3;
+  margin-bottom: 6px;
+}
+.login-top p { font-size: 13px; color: rgba(255,255,255,.7); }
+.login-body { padding: 28px 28px 28px; }
+
+/* ═══════ FORM ELEMENTS ═══════ */
+.field { margin-bottom: 14px; }
+.field label {
+  display: block; font-size: 13px; font-weight: 600;
+  color: var(--muted); margin-bottom: 6px;
+}
+.field input, .field select, .field textarea {
+  width: 100%; padding: 10px 13px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-sm);
+  font: 14px 'Hind Siliguri', sans-serif;
+  color: var(--ink); background: var(--white);
+  transition: border-color .15s, box-shadow .15s;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: none;
+  border-color: var(--soil);
+  box-shadow: 0 0 0 3px rgba(45,80,22,.12);
+}
+.field input[readonly] { background: #f5f3ee; color: var(--muted); }
+
+/* standalone inputs outside .field */
+input, select, textarea {
+  font: 14px 'Hind Siliguri', sans-serif;
+  color: var(--ink);
+}
+
+/* ═══════ STATS BAR ═══════ */
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px; margin-bottom: 22px;
+}
+.stat-card {
+  background: var(--white);
+  border-radius: var(--r-md);
+  padding: 16px 18px;
+  box-shadow: var(--sh-sm);
+  border-left: 4px solid var(--soil);
+  position: relative; overflow: hidden;
+}
+.stat-card::before {
+  content: '';
+  position: absolute; right: -10px; top: -10px;
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: currentColor; opacity: .05;
+}
+.stat-card.red   { border-color: var(--red);   color: var(--red); }
+.stat-card.amber { border-color: var(--amber);  color: var(--amber); }
+.stat-card.blue  { border-color: var(--river);  color: var(--river); }
+.stat-card b {
+  display: block; font-size: 30px; font-weight: 700;
+  color: inherit; line-height: 1.1; margin-bottom: 4px;
+}
+.stat-card.red b   { color: var(--red); }
+.stat-card.amber b { color: var(--amber); }
+.stat-card.blue b  { color: var(--river); }
+.stat-card > b { color: var(--soil); }
+.stat-card span { font-size: 12px; color: var(--muted); font-weight: 600; }
+
+/* ═══════ MAIN TABS ═══════ */
+.main-tabs {
+  display: flex; gap: 6px; margin-bottom: 20px;
+}
+.main-tab {
+  padding: 10px 20px; border-radius: var(--r-md);
+  border: 1.5px solid var(--border);
+  background: var(--white); color: var(--muted);
+  font: 600 14px 'Hind Siliguri', sans-serif;
+  cursor: pointer; transition: all .15s;
+  display: flex; align-items: center; gap: 8px;
+}
+.main-tab:hover { border-color: var(--leaf); color: var(--soil); background: #e8f0df; }
+.main-tab.active {
+  background: var(--soil); color: #fff;
+  border-color: var(--soil);
+}
+
+/* ═══════ PANELS ═══════ */
+.panel {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 22px;
+  box-shadow: var(--sh-sm);
+}
+.panel-title {
+  font-size: 17px; font-weight: 700;
+  color: var(--ink); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.panel-title svg { color: var(--soil); flex-shrink: 0; }
+
+/* ═══════ SECTION HEAD ═══════ */
+.section-head {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 10px; margin-bottom: 16px; flex-wrap: wrap;
+}
+
+/* ═══════ STATUS TABS ═══════ */
+.status-tabs {
+  display: flex; gap: 6px; flex-wrap: wrap;
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1.5px solid var(--border);
+}
+.tab {
+  padding: 6px 13px; border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: var(--parch); color: var(--muted);
+  font: 600 12px 'Hind Siliguri', sans-serif;
+  cursor: pointer; transition: all .14s; white-space: nowrap;
+}
+.tab:hover { border-color: var(--leaf); color: var(--soil); }
+.tab.active { background: var(--soil); color: #fff; border-color: var(--soil); }
+.tab.tab-rejected.active { background: var(--red); border-color: var(--red); }
+.tab .cnt {
+  display: inline-block; min-width: 18px;
+  margin-left: 5px; padding: 0 5px;
+  border-radius: 10px; background: rgba(0,0,0,.15);
+  font-size: 11px;
+}
+
+/* ═══════ SEARCH ROW ═══════ */
+.search-row {
+  display: flex; gap: 8px; margin-bottom: 14px;
+}
+.search-input {
+  flex: 1; padding: 9px 13px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--parch);
+  transition: border-color .15s, box-shadow .15s;
+}
+.search-input:focus {
+  outline: none; border-color: var(--soil);
+  box-shadow: 0 0 0 3px rgba(45,80,22,.1);
+  background: var(--white);
+}
+.filter-sel {
+  padding: 8px 10px; border-radius: var(--r-sm);
+  border: 1.5px solid var(--border);
+  background: var(--white); cursor: pointer;
+  font-size: 13px; color: var(--ink);
+}
+
+/* ═══════ ORDER CARDS ═══════ */
+.stack { display: flex; flex-direction: column; gap: 10px; }
+
+.order-card {
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--parch);
+  overflow: hidden;
+  transition: box-shadow .14s;
+}
+.order-card:hover { box-shadow: var(--sh-sm); }
+
+.order-card-header {
+  padding: 14px 16px;
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.order-card-header h4 {
+  font-size: 15px; font-weight: 700; color: var(--ink); line-height: 1.3;
+}
+.badge-row { display: flex; gap: 5px; flex-wrap: wrap; }
+
+.order-card-body { padding: 12px 16px; }
+.order-meta {
+  font-size: 13px; color: var(--muted); margin-bottom: 8px;
+  display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+}
+.order-meta-sep { color: var(--border); }
+
+.order-card-actions {
+  padding: 10px 16px;
+  background: var(--clay);
+  border-top: 1px solid var(--border);
+  display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+}
+.action-selects { display: flex; gap: 6px; flex-wrap: wrap; }
+.action-selects select {
+  padding: 6px 9px; border-radius: var(--r-sm);
+  border: 1.5px solid var(--border); font-size: 13px;
+  background: var(--white); cursor: pointer;
+}
+.action-selects select:focus { outline: none; border-color: var(--soil); }
+
+/* ═══════ BADGES ═══════ */
+.badge {
+  display: inline-block; padding: 3px 10px;
+  border-radius: 20px; font-size: 11px; font-weight: 700;
+  white-space: nowrap;
+}
+.b-unpaid        { background: #fff0cc; color: #7a5200; }
+.b-pending_review{ background: #ddeeff; color: #194e97; }
+.b-paid          { background: #d6f5e3; color: #0a5a2e; }
+.b-pending       { background: #ebebeb; color: #484848; }
+.b-processing    { background: #ede0ff; color: #4a0080; }
+.b-completed     { background: #d0f0e0; color: #084e2e; }
+.b-rejected      { background: #ffe0e0; color: #8b0000; }
+
+/* ═══════ KHATIAN INFO ═══════ */
+.khatian-info {
+  margin: 8px 0; padding: 10px 13px;
+  border-radius: var(--r-sm);
+  background: #fffbec; border: 1px solid #e8d48a;
+  font-size: 13px; line-height: 1.9;
+}
+.khatian-info code {
+  font-size: 12px; background: #fff;
+  border: 1px solid #e0ca80; padding: 1px 7px;
+  border-radius: 4px;
+}
+.info-login {
+  background: #eaf4ff; border-color: #b0d2ef;
+}
+.info-wa {
+  background: #edfaf3; border-color: #a3dfc0;
+}
+
+/* ═══════ ITEM LIST ═══════ */
+.item-list {
+  margin: 8px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: #fff; font-size: 13px;
+  overflow: hidden;
+}
+.item-row {
+  display: flex; justify-content: space-between; gap: 10px;
+  padding: 7px 12px;
+  border-bottom: 1px dashed var(--border);
+}
+.item-row:last-child { border-bottom: none; }
+.item-row b { color: var(--soil); white-space: nowrap; font-weight: 700; }
+.item-total { background: #f0ece2; font-weight: 700; border-top: 2px solid var(--border); }
+
+/* ═══════ SERVICE ITEMS ═══════ */
+.service-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 11px 14px; border: 1px solid var(--border);
+  border-radius: var(--r-md); background: var(--parch); gap: 10px;
+}
+.service-item:hover { border-color: #b5c9a0; }
+.service-item b { font-size: 14px; }
+.service-item-price { color: var(--soil); font-weight: 700; font-size: 14px; }
+.service-item-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.service-item .tag {
+  display: inline-block; margin-top: 3px; font-size: 11px; font-weight: 700;
+  padding: 2px 8px; border-radius: 12px;
+}
+.tag-khatian { background: #fff0cc; color: #7a5200; }
+.tag-login   { background: #e3efff; color: #0b4a82; }
+
+/* ═══════ SETTINGS GRID ═══════ */
+.settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+
+/* ═══════ INSTRUCTIONS BOX ═══════ */
+.instructions-box {
+  font-size: 13px; line-height: 1.85; color: var(--muted);
+}
+.instructions-box strong { color: var(--ink); }
+code {
+  background: #eeeae0; padding: 2px 6px;
+  border-radius: 4px; font-size: 12px;
+}
+
+/* ═══════ AUTO-WA TOGGLE ═══════ */
+.toggle-row {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--muted); cursor: pointer;
+}
+.toggle-row input[type=checkbox] { width: auto; accent-color: var(--soil); }
+
+/* ═══════ TOAST ═══════ */
+#toast {
+  position: fixed; bottom: 24px; right: 24px; max-width: 90%;
+  padding: 12px 18px; background: var(--soil-dk);
+  color: #fff; border-radius: var(--r-md); z-index: 999;
+  display: none; box-shadow: var(--sh-md); font-size: 14px;
+  border-left: 4px solid var(--straw);
+}
+
+/* ═══════ HORIZONTAL RULE ═══════ */
+hr { border: none; border-top: 1px solid var(--border); margin: 18px 0; }
+
+/* ═══════ UTILITY ═══════ */
+.hidden  { display: none !important; }
+.muted   { color: var(--muted); font-size: 13px; }
+
+/* ═══════ LAND MOTIF DIVIDER ═══════ */
+.land-divider {
+  text-align: center; margin: 4px 0 20px;
+  font-size: 11px; color: rgba(255,255,255,.5);
+  letter-spacing: .06em;
+}
+
+/* ═══════ RESPONSIVE ═══════ */
+@media (max-width: 900px) {
+  .settings-grid { grid-template-columns: 1fr; }
+  .stats-bar { grid-template-columns: repeat(2, 1fr); }
+  .header { padding: 0 14px; }
+  .brand-text h1 { font-size: 15px; }
+}
+@media (max-width: 500px) {
+  .stats-bar { grid-template-columns: 1fr 1fr; }
+  .header-right .badge-status { display: none; }
+  .main-tab span.tab-label { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header class="header">
+  <div class="brand-wrap">
+    <div class="brand-icon">
+      <!-- Land/map icon -->
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 22L10 14L14 18L18 10L24 22H4Z" fill="white" opacity=".9"/>
+        <circle cx="18" cy="8" r="2.5" fill="white"/>
+        <path d="M4 22H24" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="brand-text">
+      <h1>ভূমি সেবা — অ্যাডমিন প্যানেল</h1>
+      <p>সজিব কম্পিউটার</p>
+    </div>
+  </div>
+  <div class="header-right">
+    <span id="adminBadge" class="badge-status">লগইন করা হয়নি</span>
+    <button id="logoutBtn" class="btn btn-ghost hidden" type="button">লগআউট</button>
+    <a href="index.html" class="btn btn-ghost">মূল সাইট</a>
+  </div>
+</header>
+
+<!-- ══ MAIN WRAP ══ -->
+<main class="wrap">
+
+  <!-- LOGIN PANEL -->
+  <div id="loginPanel" class="login-outer">
+    <div class="login-card">
+      <div class="login-top">
+        <div class="login-icon-wrap">
+          <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="4" width="26" height="26" rx="6" fill="white" opacity=".2"/>
+            <path d="M9 26L14 17L17 21L21 13L25 26H9Z" fill="white" opacity=".9"/>
+            <circle cx="21" cy="11" r="3" fill="white"/>
+          </svg>
+        </div>
+        <h2>অ্যাডমিন লগইন</h2>
+        <p>শুধু অনুমোদিত অ্যাডমিন অ্যাকাউন্ট প্রবেশ করতে পারবে</p>
+      </div>
+      <div class="login-body">
+        <form id="loginForm">
+          <div class="field">
+            <label>WhatsApp নম্বর</label>
+            <input id="phone" inputmode="tel" autocomplete="username" placeholder="01XXXXXXXXX" required>
+          </div>
+          <div class="field">
+            <label>পাসওয়ার্ড</label>
+            <input id="password" type="password" autocomplete="current-password" required minlength="6" placeholder="পাসওয়ার্ড">
+          </div>
+          <button class="btn btn-primary btn-full btn-lg" type="submit" style="margin-top:6px">🔐 নিরাপদে লগইন</button>
+        </form>
+        <p class="muted" style="margin-top:14px;font-size:12px;text-align:center;line-height:1.6">অ্যাডমিন অ্যাকাউন্ট Firebase Console-এ Authentication-এ আগে তৈরি করতে হবে।</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ DASHBOARD ══ -->
+  <div id="dashboard" class="hidden">
+
+    <!-- STATS BAR -->
+    <div id="statsBar" class="stats-bar"></div>
+
+    <!-- MAIN NAVIGATION TABS -->
+    <div class="main-tabs">
+      <button type="button" class="main-tab active" data-main="orders">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 6h6M5 9h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span class="tab-label">আবেদন</span>
+      </button>
+      <button type="button" class="main-tab" data-main="settings">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5v1.7M8 12.8v1.7M1.5 8h1.7M12.8 8h1.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span class="tab-label">সেটিংস</span>
+      </button>
+    </div>
+
+    <!-- ══ ORDERS PANE ══ -->
+    <div id="paneOrders">
+      <section class="panel">
+
+        <div class="section-head">
+          <h3 class="panel-title" style="margin:0">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="14" height="14" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 7h7M5.5 10.5h4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            সব আবেদন
+          </h3>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <label class="toggle-row">
+              <input id="autoWhatsApp" type="checkbox" checked>
+              নতুন অর্ডারে WhatsApp খুলুন
+            </label>
+            <select id="filterPay" class="filter-sel">
+              <option value="">সব পেমেন্ট</option>
+              <option value="unpaid">পেমেন্ট হয়নি</option>
+              <option value="pending_review">যাচাই অপেক্ষমাণ</option>
+              <option value="paid">যাচাই সম্পন্ন</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="search-row">
+          <input id="orderSearch" class="search-input" type="search"
+            placeholder="🔍 আবেদন নম্বর, মোবাইল বা নাম দিয়ে খুঁজুন" autocomplete="off">
+          <button type="button" class="btn btn-outline" id="clearSearch">মুছুন</button>
+        </div>
+
+        <div id="statusTabs" class="status-tabs"></div>
+
+        <div id="allOrders" class="stack">
+          <p class="muted" style="padding:10px">লগইন করলে আবেদন দেখাবে।</p>
+        </div>
+
+      </section>
+    </div><!-- /paneOrders -->
+
+    <!-- ══ SETTINGS PANE ══ -->
+    <div class="hidden" id="paneSettings">
+
+      <!-- ওয়েবসাইট সেটিংস বাটন -->
+      <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
+        <button type="button" class="btn btn-outline" id="toggleCfgBtn" style="gap:8px">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5v1.7M8 12.8v1.7M1.5 8h1.7M12.8 8h1.7M3.4 3.4l1.2 1.2M11.4 11.4l1.2 1.2M3.4 12.6l1.2-1.2M11.4 4.6l1.2-1.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          ⚙️ ওয়েবসাইট সেটিংস
+        </button>
+      </div>
+
+      <!-- ওয়েবসাইট সেটিংস ড্রপডাউন প্যানেল -->
+      <div id="cfgPanel" class="panel hidden" style="margin-bottom:18px">
+        <h3 class="panel-title">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M9 2v1.8M9 14.2V16M2 9h1.8M14.2 9H16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          ওয়েবসাইট সেটিংস
+        </h3>
+        <form id="configForm">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 18px">
+            <div class="field">
+              <label>অফিশিয়াল WhatsApp নম্বর</label>
+              <input id="cfgWhatsapp" placeholder="01XXXXXXXXX">
+            </div>
+            <div class="field">
+              <label>ফেসবুক পেজের লিংক</label>
+              <input id="cfgFacebook" inputmode="url" placeholder="https://www.facebook.com/আপনার-পেজ">
+            </div>
+            <div class="field">
+              <label>বিকাশ মার্চেন্ট নম্বর</label>
+              <input id="cfgMerchantNo" placeholder="01XXXXXXXXX">
+            </div>
+            <div class="field">
+              <label>বিকাশ এজেন্ট নম্বর</label>
+              <input id="cfgAgentNo" placeholder="01XXXXXXXXX">
+            </div>
+            <div class="field">
+              <label>বিকাশ মার্চেন্ট QR ছবির URL</label>
+              <input id="cfgMerchant" placeholder="https://…/merchant-qr.png">
+            </div>
+            <div class="field">
+              <label>বিকাশ এজেন্ট QR ছবির URL</label>
+              <input id="cfgAgent" placeholder="https://…/agent-qr.png">
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:4px">
+            <button class="btn btn-primary" type="submit">সেটিংস সংরক্ষণ</button>
+            <button type="button" class="btn btn-outline" id="closeCfgBtn">বন্ধ করুন</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- সেবা: বাম = ফর্ম, ডান = তালিকা -->
+      <div class="settings-grid">
+
+        <!-- বাম: নতুন সেবা যোগ করুন -->
+        <form id="serviceForm" class="panel">
+          <h3 class="panel-title">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M9 6v6M6 9h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            নতুন সেবা যোগ করুন
+          </h3>
+          <div class="field">
+            <label>সেবার নাম</label>
+            <input id="newServiceName" required placeholder="যেমন: নামজারি আবেদন">
+          </div>
+          <div class="field">
+            <label>সরকারী ফি (টাকা)</label>
+            <input id="newGovFee" type="number" min="0" step="1" required placeholder="0">
+          </div>
+          <div class="field">
+            <label>সার্ভিস চার্জ (টাকা)</label>
+            <input id="newServiceCharge" type="number" min="0" step="1" required placeholder="0">
+          </div>
+          <div class="field">
+            <label>মোট (টাকা) — নিজে থেকে যোগ হয়</label>
+            <input id="newServicePrice" type="number" readonly placeholder="0">
+          </div>
+          <div class="field">
+            <label class="toggle-row" style="font-size:13px;color:var(--ink)">
+              <input id="newKhatian" type="checkbox" style="width:auto;accent-color:var(--soil)">
+              খতিয়ান সেবা (জেলা, উপজেলা, মৌজা ও খতিয়ান নম্বর)
+            </label>
+          </div>
+          <div class="field">
+            <label class="toggle-row" style="font-size:13px;color:var(--ink)">
+              <input id="newAskLogin" type="checkbox" style="width:auto;accent-color:var(--soil)">
+              নামজারি ধরনের সেবা (মিউটেশন লগইন ঐচ্ছিক)
+            </label>
+          </div>
+          <div class="field">
+            <label class="toggle-row" style="font-size:13px;color:var(--ink)">
+              <input id="newLogin" type="checkbox" style="width:auto;accent-color:var(--soil)">
+              ভূমি উন্নয়ন কর (লগইন ঐচ্ছিক, WhatsApp লেনদেন)
+            </label>
+          </div>
+          <button class="btn btn-primary" type="submit" style="margin-top:4px">সেবা যোগ করুন</button>
+        </form>
+
+        <!-- ডান: যুক্ত করা সেবা তালিকা -->
+        <div class="panel">
+          <h3 class="panel-title">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="14" height="14" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 7h7M5.5 10.5h4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            যুক্ত করা সেবা
+          </h3>
+          <div id="adminServices" class="stack"><p class="muted">লোড হচ্ছে…</p></div>
+        </div>
+
+      </div>
+    </div><!-- /paneSettings -->
+  </div><!-- /dashboard -->
+
+</main>
+
+<div id="toast" role="status"></div>
+
+<script type="module">
+// ═══════════════════════════════════════════════════════════════
+//  ভূমি সেবা সহায়তা কেন্দ্র — অ্যাডমিন প্যানেল
+// ═══════════════════════════════════════════════════════════════
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut }
+  from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import {
+  getFirestore, collection, doc, setDoc, addDoc, getDoc, getDocs,
+  updateDoc, onSnapshot, query, orderBy, deleteDoc, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyDTYfZOCJVeFK3Fkv4zjqXfgpqObP_DgDk",
+  authDomain:        "safitraders-c38e0.firebaseapp.com",
+  projectId:         "safitraders-c38e0",
+  storageBucket:     "safitraders-c38e0.firebasestorage.app",
+  messagingSenderId: "681606256265",
+  appId:             "1:681606256265:web:22aba393e78cfa00571858",
+};
+
+const ADMIN_UID = "iwhc2raZUTZoUayZfnUE7BYl5iJ3";
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c =>
+  ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const money = n => "৳ " + Number(n || 0).toLocaleString("bn-BD");
+const digits = s => (s || "").replace(/\D/g, "");
+
+function toast(msg) {
+  const t = $("toast");
+  t.textContent = msg;
+  t.style.display = "block";
+  clearTimeout(t._tid);
+  t._tid = setTimeout(() => t.style.display = "none", 3800);
+}
+
+function emailFor(phone) { return "wa" + digits(phone) + "@landservice.invalid"; }
+
+function authError(code) {
+  return ({
+    "auth/invalid-credential":    "নম্বর বা পাসওয়ার্ড সঠিক নয়।",
+    "auth/invalid-email":         "নম্বরটি যাচাই করুন।",
+    "auth/too-many-requests":     "বহুবার চেষ্টা হয়েছে, কিছুক্ষণ পরে আবার চেষ্টা করুন।",
+    "auth/operation-not-allowed": "Firebase Authentication-এ Email/Password চালু করুন।",
+  })[code] || ("লগইন ব্যর্থ: " + code);
+}
+
+const payText = s => ({
+  unpaid:         "পেমেন্ট হয়নি",
+  pending_review: "যাচাই অপেক্ষমাণ",
+  paid:           "যাচাই সম্পন্ন",
+})[s] || s || "—";
+
+const statusText = s => ({
+  pending:    "নতুন",
+  processing: "কাজ চলমান",
+  completed:  "সম্পন্ন",
+  rejected:   "বাতিল",
+})[s] || s || "নতুন";
+
+// ── Login ───────────────────────────────────────────────────
+$("loginForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const btn = e.target.querySelector("[type=submit]");
+  btn.disabled = true; btn.textContent = "লগইন হচ্ছে…";
+  try {
+    await signInWithEmailAndPassword(auth, emailFor($("phone").value), $("password").value);
+  } catch (err) {
+    toast(authError(err.code));
+    btn.disabled = false; btn.textContent = "🔐 নিরাপদে লগইন";
+  }
+});
+$("logoutBtn").onclick = () => signOut(auth);
+
+// ── Settings ─────────────────────────────────────────────────
+let siteWhatsApp = "";
+
+async function loadSettings() {
+  const s = await getDoc(doc(db, "settings", "public"));
+  const d = s.exists() ? s.data() : {};
+  siteWhatsApp = digits(d.whatsapp || "");
+  $("cfgWhatsapp").value    = d.whatsapp       || "";
+  $("cfgFacebook").value    = d.facebook        || "";
+  $("cfgMerchant").value    = d.merchantQr      || "";
+  $("cfgAgent").value       = d.agentQr         || "";
+  $("cfgMerchantNo").value  = d.merchantNumber  || "";
+  $("cfgAgentNo").value     = d.agentNumber     || "";
+}
+
+$("configForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  let fb = $("cfgFacebook").value.trim();
+  if (fb && !/^https?:\/\//i.test(fb)) fb = "https://" + fb;
+  if (fb && !/^https:\/\/([a-z0-9-]+\.)?(facebook\.com|fb\.com|fb\.me)\//i.test(fb))
+    return toast("সঠিক ফেসবুক লিংক দিন।");
+  $("cfgFacebook").value = fb;
+  try {
+    await setDoc(doc(db, "settings", "public"), {
+      facebook:       fb,
+      whatsapp:       $("cfgWhatsapp").value.trim(),
+      merchantQr:     $("cfgMerchant").value.trim(),
+      agentQr:        $("cfgAgent").value.trim(),
+      merchantNumber: $("cfgMerchantNo").value.trim(),
+      agentNumber:    $("cfgAgentNo").value.trim(),
+      updatedAt:      serverTimestamp(),
+    }, { merge:true });
+    siteWhatsApp = digits($("cfgWhatsapp").value.trim());
+    toast("সেটিংস সংরক্ষিত হয়েছে।");
+  } catch (err) { toast("সংরক্ষণ ব্যর্থ: " + err.message); }
+});
+
+// ── Services ─────────────────────────────────────────────────
+let services = [];
+
+async function loadServices() {
+  const snap = await getDocs(collection(db, "services"));
+  services = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+  renderServices();
+}
+
+function renderServices() {
+  const host = $("adminServices");
+  if (!services.length) {
+    host.innerHTML = '<p class="muted">এখনো কোনো সেবা নেই।</p>'; return;
+  }
+  host.innerHTML = services.map(s => `
+    <div class="service-item">
+      <div>
+        <b>${esc(s.name)}</b>
+        ${s.govFee != null || s.serviceCharge != null
+          ? `<span style="display:block;color:var(--muted);font-size:12px">সরকারী ফি ${money(s.govFee)} + সার্ভিস চার্জ ${money(s.serviceCharge)}</span>
+             <span class="service-item-price">মোট ${money(s.price)}</span>`
+          : `<span class="service-item-price">${money(s.price)}</span>`}
+        ${s.requiresKhatian ? '<span class="tag tag-khatian">📜 খতিয়ান সেবা</span>' : ""}
+        ${s.askLogin ? '<span class="tag tag-login">🔐 লগইন ঐচ্ছিক</span>' : ""}
+        ${s.requiresLogin ? '<span class="tag tag-login">🔐 ভূমি কর (WhatsApp)</span>' : ""}
+      </div>
+      <div class="service-item-actions">
+        <button type="button" class="btn btn-outline" style="padding:5px 10px;font-size:12px" data-edit="${s.id}">সম্পাদনা</button>
+        <button type="button" class="btn btn-red" style="padding:5px 10px;font-size:12px" data-del="${s.id}">মুছুন</button>
+      </div>
+    </div>`).join("");
+
+  host.querySelectorAll("[data-edit]").forEach(b => b.onclick = async () => {
+    const s = services.find(x => x.id === b.dataset.edit); if (!s) return;
+    const name = prompt("সেবার নাম:", s.name || ""); if (name === null) return;
+    const g = prompt("সরকারী ফি (টাকা):", String(s.govFee ?? 0)); if (g === null) return;
+    const c = prompt("সার্ভিস চার্জ (টাকা):", String(s.serviceCharge ?? (s.price || 0))); if (c === null) return;
+    const govFee = Number(g), serviceCharge = Number(c), price = govFee + serviceCharge;
+    if (!name.trim() || !Number.isFinite(price) || govFee < 0 || serviceCharge < 0)
+      return toast("সঠিক নাম, ফি ও চার্জ দিন।");
+    const requiresKhatian = confirm("এটি কি খতিয়ান সেবা?");
+    const askLogin = confirm("এটি কি নামজারি ধরনের সেবা?");
+    const requiresLogin = confirm("এটি কি ভূমি উন্নয়ন কর সেবা?");
+    try {
+      await updateDoc(doc(db, "services", s.id), {
+        name: name.trim(), govFee, serviceCharge, price,
+        requiresKhatian, requiresLogin, askLogin, updatedAt: serverTimestamp()
+      });
+      await loadServices(); toast("সেবা আপডেট হয়েছে।");
+    } catch (e) { toast("আপডেট ব্যর্থ: " + e.message); }
+  });
+
+  host.querySelectorAll("[data-del]").forEach(b => b.onclick = async () => {
+    const s = services.find(x => x.id === b.dataset.del);
+    if (!s || !confirm(`"${s.name}" মুছে ফেলবেন?`)) return;
+    try {
+      await deleteDoc(doc(db, "services", s.id));
+      await loadServices(); toast("সেবা মুছে ফেলা হয়েছে।");
+    } catch (e) { toast("মুছতে ব্যর্থ: " + e.message); }
+  });
+}
+
+const calcTotal = () => {
+  $("newServicePrice").value = (Number($("newGovFee").value) || 0) + (Number($("newServiceCharge").value) || 0);
+};
+$("newGovFee").oninput = calcTotal;
+$("newServiceCharge").oninput = calcTotal;
+
+$("serviceForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const name = $("newServiceName").value.trim();
+  const govFee = Number($("newGovFee").value);
+  const serviceCharge = Number($("newServiceCharge").value);
+  if (!name || !Number.isFinite(govFee) || !Number.isFinite(serviceCharge) || govFee < 0 || serviceCharge < 0)
+    return toast("সঠিক নাম, সরকারী ফি ও সার্ভিস চার্জ দিন।");
+  const price = govFee + serviceCharge;
+  const requiresKhatian = $("newKhatian").checked;
+  const requiresLogin   = $("newLogin").checked;
+  const askLogin        = $("newAskLogin").checked;
+  try {
+    await addDoc(collection(db, "services"), {
+      name, govFee, serviceCharge, price, requiresKhatian, requiresLogin, askLogin,
+      createdAt: serverTimestamp()
+    });
+    e.target.reset(); await loadServices(); toast("নতুন সেবা যোগ হয়েছে।");
+  } catch (err) { toast("সেবা যোগ ব্যর্থ: " + err.message); }
+});
+
+// ── Orders ───────────────────────────────────────────────────
+let allOrdersCache = [];
+let stopOrders = null;
+let ordersSnapshotInitialized = false;
+let knownOrderIds = new Set();
+const AUTO_WA_KEY = "admin_auto_whatsapp_on_new_order";
+const autoWaControl = document.getElementById("autoWhatsApp");
+if (autoWaControl) {
+  const saved = localStorage.getItem(AUTO_WA_KEY);
+  autoWaControl.checked = saved === null ? true : saved === "1";
+  autoWaControl.addEventListener("change", () => {
+    localStorage.setItem(AUTO_WA_KEY, autoWaControl.checked ? "1" : "0");
+    toast(autoWaControl.checked
+      ? "নতুন অর্ডারে WhatsApp খোলার ব্যবস্থা চালু হয়েছে।"
+      : "স্বয়ংক্রিয় WhatsApp খোলা বন্ধ হয়েছে।");
+  });
+}
+
+function openWhatsAppDraftForOrder(orderEntry) {
+  if (!orderEntry || !autoWaControl?.checked) return;
+  const url = buildWaLink(orderEntry.data.phone, orderEntry.data, orderEntry.id);
+  if (!url) { toast("নতুন অর্ডারে WhatsApp নম্বর পাওয়া যায়নি।"); return; }
+  const opened = window.open(url, "_blank", "noopener,noreferrer");
+  if (!opened) toast("WhatsApp খোলা যায়নি — পপ-আপ অনুমতি দিন।");
+  else toast("নতুন অর্ডারের মেসেজ WhatsApp-এ প্রস্তুত হচ্ছে।");
+}
+
+function buildWaLink(phone, order, id) {
+  const ph = digits(phone || "");
+  if (!ph) return null;
+  const msg = [
+    `আস্সালামুআলাইকুম ${order.customerName || ""},`,
+    `আপনার ভূমি সেবার আবেদন পেয়েছি।`,
+    Array.isArray(order.items) && order.items.length
+      ? "সেবা:\n" + order.items.map((it, i) =>
+          `${i+1}. ${it.name}${it.qty > 1 ? " × " + it.qty : ""} — ${money(it.lineTotal ?? it.price)}`
+        ).join("\n")
+      : `সেবা: ${order.serviceName || ""}`,
+    `মোট মূল্য: ${money(order.amount)}`,
+    order.paymentStatus === "paid"
+      ? "✅ আপনার পেমেন্ট যাচাই সম্পন্ন হয়েছে।"
+      : order.paymentStatus === "pending_review"
+        ? `🔍 আপনার পেমেন্ট (TrxID: ${order.trxId || "—"}) যাচাই হচ্ছে।`
+        : "💳 পেমেন্ট এখনো হয়নি।",
+    `ট্র্যাকিং নম্বর: ${id || "—"}`,
+    `আবেদনের অবস্থা: ${statusText(order.status)}`,
+    id ? `🔍 অবস্থা দেখুন: https://saiftraderslsfc.web.app/index.html?id=${encodeURIComponent(id)}#track` : "",
+  ].join("\n");
+  return `https://wa.me/88${ph}?text=${encodeURIComponent(msg)}`;
+}
+
+function orderCard(data, id) {
+  const date = data.createdAt?.toDate
+    ? data.createdAt.toDate().toLocaleString("bn-BD") : "";
+  const waUrl = buildWaLink(data.phone, data, id);
+
+  return `
+  <article class="order-card" data-id="${id}">
+    <div class="order-card-header">
+      <h4>${Array.isArray(data.items) && data.items.length > 1
+        ? "📦 " + data.items.length.toLocaleString("bn-BD") + "টি সেবার আবেদন"
+        : esc(data.serviceName || "সেবা")}</h4>
+      <div class="badge-row">
+        <span class="badge b-${data.paymentStatus || "unpaid"}">${esc(payText(data.paymentStatus))}</span>
+        <span class="badge b-${data.status || "pending"}">${esc(statusText(data.status))}</span>
+      </div>
+    </div>
+    <div class="order-card-body">
+      <div class="order-meta">
+        <b>${esc(data.customerName || "—")}</b>
+        <span class="order-meta-sep">|</span>
+        📞 ${esc(data.phone || "—")}
+        <span class="order-meta-sep">|</span>
+        <b style="color:var(--soil)">${money(data.amount)}</b>
+      </div>
+      ${data.khatian ? `
+        <div class="khatian-info">
+          📍 <b>জেলা:</b> ${esc(data.khatian.district)} &nbsp;|&nbsp;
+          <b>উপজেলা:</b> ${esc(data.khatian.upazila)} &nbsp;|&nbsp;
+          <b>মৌজা:</b> ${esc(data.khatian.mouza)}<br>
+          📜 <b>খতিয়ান নম্বর (${(data.khatian.numbers || []).length.toLocaleString("bn-BD")}টি):</b>
+          ${(data.khatian.numbers || []).map(n => `<code>${esc(n)}</code>`).join(" ")}
+        </div>` : ""}
+      ${Array.isArray(data.items) && data.items.length ? `
+        <div class="item-list">
+          ${data.items.map((it, i) => `
+          <div class="item-row">
+            <span>${(i+1).toLocaleString("bn-BD")}। ${esc(it.name)}${it.qty > 1 ? " × " + it.qty.toLocaleString("bn-BD") : ""}
+              ${it.govFee != null ? `<br><small style="color:var(--muted)">সরকারী ফি ${money(it.govFee)} + সার্ভিস চার্জ ${money(it.serviceCharge)}${it.qty > 1 ? " (প্রতিটি)" : ""}</small>` : ""}
+            </span>
+            <b>${money(it.lineTotal ?? it.price)}</b>
+          </div>`).join("")}
+          ${data.govFeeTotal != null ? `
+          <div class="item-row"><span>সরকারী ফি মোট</span><b>${money(data.govFeeTotal)}</b></div>
+          <div class="item-row"><span>সার্ভিস চার্জ মোট</span><b>${money(data.serviceChargeTotal)}</b></div>` : ""}
+          <div class="item-row item-total"><span>সর্বমোট</span><b>${money(data.amount)}</b></div>
+        </div>` : ""}
+      ${data.mutationLogin ? `
+        <div class="khatian-info info-login">
+          🔐 <b>মিউটেশন সাইট লগইন</b><br>
+          ইউজার আইডি: <code>${esc(data.mutationLogin.userId)}</code> &nbsp;|&nbsp;
+          পাসওয়ার্ড: <code>${esc(data.mutationLogin.password)}</code>
+          ${data.adminChargeNote ? `<br>💰 সার্ভিস চার্জ: <b>${esc(data.adminChargeNote)}</b> টাকা` : ""}
+          ${data.paymentMethod === "whatsapp" ? `<br><small style="color:var(--muted)">💬 পেমেন্ট নেই — WhatsApp-এ যোগাযোগ করুন।</small>` : ""}
+        </div>` : ""}
+      ${!data.mutationLogin && data.paymentMethod === "whatsapp" ? `
+        <div class="khatian-info info-wa">
+          💬 লগইন তথ্য দেননি — WhatsApp-এ যোগাযোগ করে লেনদেন করুন।
+          ${data.adminChargeNote ? `<br>💰 সার্ভিস চার্জ: <b>${esc(data.adminChargeNote)}</b> টাকা` : ""}
+        </div>` : ""}
+      ${data.trxId ? `<p style="font-size:13px;margin:6px 0">💳 TrxID: <b>${esc(data.trxId)}</b></p>` : ""}
+      ${data.details ? `<p style="font-size:13px;color:var(--muted);margin:4px 0">📝 ${esc(data.details)}</p>` : ""}
+      <p style="font-size:12px;color:var(--muted);margin:6px 0 0">🕐 ${esc(date)} &nbsp;|&nbsp; ID: <code>${esc(id)}</code></p>
+    </div>
+    <div class="order-card-actions">
+      ${waUrl
+        ? `<a class="btn btn-wa" href="${esc(waUrl)}" target="_blank" rel="noopener">💬 WhatsApp</a>`
+        : `<span class="muted">📵 WhatsApp নম্বর নেই</span>`}
+      <div class="action-selects">
+        <select class="sel-pay" data-oid="${id}">
+          <option value="unpaid"         ${data.paymentStatus==="unpaid"         ?"selected":""}>পেমেন্ট হয়নি</option>
+          <option value="pending_review" ${data.paymentStatus==="pending_review" ?"selected":""}>যাচাই অপেক্ষমাণ</option>
+          <option value="paid"           ${data.paymentStatus==="paid"           ?"selected":""}>✅ যাচাই সম্পন্ন</option>
+        </select>
+        <select class="sel-status" data-oid="${id}">
+          <option value="pending"    ${(!data.status||data.status==="pending")?"selected":""}>নতুন</option>
+          <option value="processing" ${data.status==="processing"               ?"selected":""}>কাজ চলমান</option>
+          <option value="completed"  ${data.status==="completed"                ?"selected":""}>✅ সম্পন্ন</option>
+          <option value="rejected"   ${data.status==="rejected"                 ?"selected":""}>❌ বাতিল</option>
+        </select>
+        <button class="btn btn-primary" style="padding:6px 14px" data-save="${id}">আপডেট</button>
+        ${data.status === "rejected"
+          ? `<button class="btn btn-red" style="padding:6px 12px" data-delorder="${id}">🗑</button>` : ""}
+      </div>
+    </div>
+  </article>`;
+}
+
+let activeTab = "all";
+const TABS = [
+  ["all",        "📋 সব"],
+  ["pending",    "🆕 নতুন"],
+  ["processing", "⏳ চলমান"],
+  ["completed",  "✅ সম্পন্ন"],
+  ["rejected",   "❌ বাতিল"],
+];
+const stOf = o => o.data.status || "pending";
+
+function renderTabs() {
+  const count = k => k === "all"
+    ? allOrdersCache.filter(o => stOf(o) !== "rejected").length
+    : allOrdersCache.filter(o => stOf(o) === k).length;
+  $("statusTabs").innerHTML = TABS.map(([k, label]) =>
+    `<button type="button" class="tab tab-${k}${k === activeTab ? " active" : ""}" data-tab="${k}">${label}<span class="cnt">${count(k).toLocaleString("bn-BD")}</span></button>`
+  ).join("");
+  $("statusTabs").querySelectorAll("[data-tab]").forEach(b => b.onclick = () => {
+    activeTab = b.dataset.tab; applyFilters();
+  });
+}
+
+const bnToEn = t => String(t || "").replace(/[০-৯]/g, d => "০১২৩৪৫৬৭৮৯".indexOf(d));
+
+function matchSearch(data, id) {
+  const raw = ($("orderSearch").value || "").trim();
+  if (!raw) return true;
+  const q = bnToEn(raw).toLowerCase();
+  const qDigits = q.replace(/\D/g, "");
+  const phone = bnToEn(data.phone || "").replace(/\D/g, "");
+  return String(id).toLowerCase().includes(q)
+      || (data.customerName || "").toLowerCase().includes(q)
+      || (qDigits.length >= 3 && phone.includes(qDigits));
+}
+
+function applyFilters() {
+  renderTabs();
+  const fPay = $("filterPay").value;
+  const filtered = allOrdersCache.filter(({ data, id }) => {
+    const st = data.status || "pending";
+    const tabOk = activeTab === "all" ? st !== "rejected" : st === activeTab;
+    return tabOk && (!fPay || data.paymentStatus === fPay) && matchSearch(data, id);
+  });
+  $("allOrders").innerHTML = filtered.length
+    ? filtered.map(({ data, id }) => orderCard(data, id)).join("")
+    : `<p class="muted" style="padding:10px">${
+        $("orderSearch").value.trim()
+          ? "এই তথ্যে কোনো আবেদন পাওয়া যায়নি।"
+          : activeTab === "rejected"
+            ? "কোনো বাতিল আবেদন নেই।"
+            : "কোনো আবেদন পাওয়া যায়নি।"
+      }</p>`;
+  bindSaveButtons();
+}
+
+function bindSaveButtons() {
+  $("allOrders").querySelectorAll("[data-delorder]").forEach(b => b.onclick = async () => {
+    if (!confirm("এই বাতিল আবেদনটি চিরতরে মুছে ফেলবেন?")) return;
+    try {
+      await deleteDoc(doc(db, "orders", b.dataset.delorder));
+      toast("আবেদন মুছে ফেলা হয়েছে।");
+    } catch (e) { toast("মুছতে ব্যর্থ: " + e.message); }
+  });
+  $("allOrders").querySelectorAll("[data-save]").forEach(b => b.onclick = async () => {
+    const id  = b.dataset.save;
+    const pay = $("allOrders").querySelector(`.sel-pay[data-oid="${id}"]`)?.value;
+    const st  = $("allOrders").querySelector(`.sel-status[data-oid="${id}"]`)?.value;
+    try {
+      await updateDoc(doc(db, "orders", id), {
+        paymentStatus: pay, status: st, updatedAt: serverTimestamp()
+      });
+      toast("আবেদন আপডেট হয়েছে।");
+    } catch (e) { toast("আপডেট ব্যর্থ: " + e.message); }
+  });
+}
+
+function updateStats() {
+  const live      = allOrdersCache.filter(o => o.data.status !== "rejected");
+  const total     = live.length;
+  const unpaid    = live.filter(o => o.data.paymentStatus === "unpaid").length;
+  const pending_r = live.filter(o => o.data.paymentStatus === "pending_review").length;
+  const completed = allOrdersCache.filter(o => o.data.status === "completed").length;
+  $("statsBar").innerHTML = `
+    <div class="stat-card">      <b>${total}</b>      <span>মোট আবেদন</span></div>
+    <div class="stat-card red">  <b>${unpaid}</b>      <span>পেমেন্ট হয়নি</span></div>
+    <div class="stat-card amber"><b>${pending_r}</b>   <span>যাচাই অপেক্ষমাণ</span></div>
+    <div class="stat-card blue"> <b>${completed}</b>   <span>সম্পন্ন</span></div>`;
+}
+
+function startOrders() {
+  if (stopOrders) { stopOrders(); stopOrders = null; }
+  stopOrders = onSnapshot(
+    query(collection(db, "orders"), orderBy("createdAt", "desc")),
+    snap => {
+      const nextEntries = snap.docs.map(d => ({ id: d.id, data: d.data() }));
+      if (!ordersSnapshotInitialized) {
+        knownOrderIds = new Set(nextEntries.map(o => o.id));
+        ordersSnapshotInitialized = true;
+      } else {
+        const newlyAdded = nextEntries.filter(o => !knownOrderIds.has(o.id));
+        nextEntries.forEach(o => knownOrderIds.add(o.id));
+        if (newlyAdded.length && autoWaControl?.checked) {
+          openWhatsAppDraftForOrder(newlyAdded[0]);
+          if (newlyAdded.length > 1)
+            toast(`${newlyAdded.length}টি নতুন অর্ডার এসেছে; প্রথমটির WhatsApp খোলা হয়েছে।`);
+        }
+      }
+      allOrdersCache = nextEntries;
+      updateStats();
+      applyFilters();
+    },
+    e => {
+      const perm = e.code === "permission-denied";
+      $("allOrders").innerHTML = `<div class="khatian-info" style="background:#fdeaea;border-color:#f3b8b8;color:#7a1f1f">
+        ❌ <b>আবেদনের তালিকা লোড হয়নি।</b><br>
+        ${perm ? "Firestore rules-এ অ্যাডমিনের অনুমতি নেই। Firebase Console → Firestore → Rules-এ rules প্রকাশ করুন।" : esc(e.message)}
+        <br><small>কোড: ${esc(e.code || "")}</small></div>`;
+      toast("আবেদন লোড হয়নি: " + e.message);
+    }
+  );
+}
+
+$("filterPay").onchange  = applyFilters;
+$("orderSearch").oninput = applyFilters;
+$("clearSearch").onclick = () => { $("orderSearch").value = ""; applyFilters(); $("orderSearch").focus(); };
+
+// ── ওয়েবসাইট সেটিংস টগল ────────────────────────────────────
+$("toggleCfgBtn").onclick = () => {
+  const panel = $("cfgPanel");
+  panel.classList.toggle("hidden");
+  $("toggleCfgBtn").innerHTML = panel.classList.contains("hidden")
+    ? `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5v1.7M8 12.8v1.7M1.5 8h1.7M12.8 8h1.7M3.4 3.4l1.2 1.2M11.4 11.4l1.2 1.2M3.4 12.6l1.2-1.2M11.4 4.6l1.2-1.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg> ⚙️ ওয়েবসাইট সেটিংস`
+    : `✕ সেটিংস বন্ধ করুন`;
+};
+$("closeCfgBtn").onclick = () => {
+  $("cfgPanel").classList.add("hidden");
+  $("toggleCfgBtn").innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5v1.7M8 12.8v1.7M1.5 8h1.7M12.8 8h1.7M3.4 3.4l1.2 1.2M11.4 11.4l1.2 1.2M3.4 12.6l1.2-1.2M11.4 4.6l1.2-1.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg> ⚙️ ওয়েবসাইট সেটিংস`;
+};
+
+document.querySelectorAll("[data-main]").forEach(b => b.onclick = () => {
+  const k = b.dataset.main;
+  document.querySelectorAll("[data-main]").forEach(x => x.classList.toggle("active", x === b));
+  $("paneOrders").classList.toggle("hidden", k !== "orders");
+  $("paneSettings").classList.toggle("hidden", k !== "settings");
+});
+
+// ── Auth state ───────────────────────────────────────────────
+onAuthStateChanged(auth, async user => {
+  if (!user) {
+    $("loginPanel").classList.remove("hidden");
+    $("dashboard").classList.add("hidden");
+    $("logoutBtn").classList.add("hidden");
+    $("adminBadge").textContent = "লগইন করা হয়নি";
+    if (stopOrders) { stopOrders(); stopOrders = null; }
+    return;
+  }
+  if (ADMIN_UID === "ADMIN_UID_HERE" || user.uid !== ADMIN_UID) {
+    toast("এই অ্যাকাউন্ট অ্যাডমিন হিসেবে অনুমোদিত নয়।");
+    await signOut(auth);
+    return;
+  }
+  $("loginPanel").classList.add("hidden");
+  $("dashboard").classList.remove("hidden");
+  $("logoutBtn").classList.remove("hidden");
+  $("adminBadge").textContent = "✅ অনুমোদিত অ্যাডমিন";
+  startOrders();
+  try {
+    await Promise.all([loadSettings(), loadServices()]);
+  } catch (e) { toast("ডেটা লোড হয়নি: " + e.message); }
+});
+</script>
+</body>
+</html>
